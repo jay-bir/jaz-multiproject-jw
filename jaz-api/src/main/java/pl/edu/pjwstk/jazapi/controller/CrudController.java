@@ -21,9 +21,12 @@ public abstract class CrudController<T extends DbEntity> {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Map<String, Object>>> getAll() {
+    public ResponseEntity<List<Map<String, Object>>> getAll(
+            @RequestParam(defaultValue = "1",name = "page") int page,
+            @RequestParam(defaultValue = "4", name = "size") int size
+    ) {
         try {
-            List<T> all = service.getAll();
+            List<T> all = service.getAll(page,size);
             List<Map<String, Object>> payload = all.stream()
                     .map(obj -> transformToDTO().apply(obj))
                     .collect(Collectors.toList());
