@@ -23,16 +23,19 @@ public abstract class CrudController<T extends DbEntity> {
     @GetMapping()
     public ResponseEntity<List<Map<String, Object>>> getAll(
             @RequestParam(defaultValue = "1",name = "page") int page,
-            @RequestParam(defaultValue = "4", name = "size") int size
+            @RequestParam(defaultValue = "4", name = "size") int size,
+            @RequestParam(defaultValue = "asc,id", name= "sort") List<String> sort
     ) {
         try {
-            List<T> all = service.getAll(page,size);
+            List<T> all = service.getAll(page,size,sort);
+            System.out.println(all);
             List<Map<String, Object>> payload = all.stream()
                     .map(obj -> transformToDTO().apply(obj))
                     .collect(Collectors.toList());
 
             return new ResponseEntity<>(payload, HttpStatus.OK);
         } catch (Exception e) {
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
