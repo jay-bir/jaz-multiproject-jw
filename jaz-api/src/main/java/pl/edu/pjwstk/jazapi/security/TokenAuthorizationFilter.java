@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static pl.edu.pjwstk.jazapi.security.util.SecurityConstants.*;
 
@@ -49,9 +50,14 @@ public class TokenAuthorizationFilter extends BasicAuthenticationFilter {
                     .build()
                     .verify(token.replace(TOKEN_PREFIX, ""));
             String user = decoded.getSubject();
+            List<GrantedAuthority> authorities = decoded.getClaim("aut").asList(String.class).stream()
+                    .map(s -> (GrantedAuthority) () -> s)
+                    .collect(Collectors.toList());
 
             if (user != null) {
-                return new UsernamePasswordAuthenticationToken(user, user, List.of(() -> "ROLE_ADMIN"));
+//                Gdyby wybuchło to tu mam poprzednie
+//                return new UsernamePasswordAuthenticationToken(user, user, List.of(() -> "ROLE_ADMIN"));
+                return new UsernamePasswordAuthenticationToken(user, user, authorities);
             }
             return null;
         }
