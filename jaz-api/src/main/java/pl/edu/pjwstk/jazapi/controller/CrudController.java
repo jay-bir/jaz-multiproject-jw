@@ -13,7 +13,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class CrudController<T extends Identifiable, R extends Identifiable> {
-    private final CrudService<T> service;
+    protected final CrudService<T> service;
 
     public CrudController(CrudService<T> service) {
         this.service = service;

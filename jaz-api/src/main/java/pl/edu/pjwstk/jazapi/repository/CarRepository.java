@@ -10,6 +10,5 @@ import java.util.List;
 @Repository
 public interface CarRepository extends JpaRepository<Car, Long> {
 
-    @Query(value="SELECT * FROM cars WHERE manufacturer=?1")
-    List<Car> getByManufacturer(String manufacturer);
+    public List<Car> findByManufacturer(String manufacturer);
 }

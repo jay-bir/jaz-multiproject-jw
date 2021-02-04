@@ -7,6 +7,7 @@ import pl.edu.pjwstk.jazapi.repository.AddOnRepository;
 import pl.edu.pjwstk.jazapi.repository.CarRepository;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -59,5 +60,9 @@ public class CarService extends CrudService<Car> {
 
             return updateEntity;
         }
+    }
+
+    public List<Car> getByManufacturer(String manufacturer){
+        return ((CarRepository) repository).findByManufacturer(manufacturer);
     }
 }
